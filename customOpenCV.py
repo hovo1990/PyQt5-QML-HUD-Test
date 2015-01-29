@@ -117,9 +117,13 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
 
 
-    colorChanged = pyqtSignal()
-    readyChanged = pyqtSignal(int)
-    readySignal = pyqtSignal()
+#    colorChanged = pyqtSignal()
+#    readyChanged = pyqtSignal(int)
+#    readySignal = pyqtSignal()
+
+
+    activateVideoChanged = pyqtSignal()
+    activateFaceRecognitionChanged = pyqtSignal()
     #timerEvent
 
     def __init__(self, parent = None):
@@ -134,6 +138,7 @@ class CustomOpenCVItem(QQuickPaintedItem):
 #        self.ready = 0
 #        self.startTimer(100)
 
+        self.activateVideoStream = True
 
         self._capture = cv2.VideoCapture(0)
         # Take one frame to query height
@@ -182,7 +187,23 @@ class CustomOpenCVItem(QQuickPaintedItem):
            return rgb2qimage(array)
        raise ValueError("can only convert 2D or 3D arrays")
 
+    def getFaceRecognitionState(self):
+        return self.facialRecognition
 
+    def setFaceRecognitionState(self,state):
+        if self.facialRecognition != state:
+            print("Yay MotherFucker FaceRecognition")
+            print("state is ",state)
+            self.facialRecognition  = state
+
+    def getVideoState(self):
+        return self.activateVideoStream
+
+    def setVideoState(self, state):
+        if self.activateVideoStream != state:
+            print("Yay MotherFucker")
+            print("state is ",state)
+            self.activateVideoStream  = state
 
 #    def timerEvent(self, timer):
 #        if self.ready >= 100:
@@ -213,8 +234,14 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
 
     def paint(self, painter):
-        painter.drawImage(QPoint(self.mPosX, self.mPosY), self._image) #.scaled(self.size(),Qt.KeepAspectRatio, Qt.SmoothTransformation))
-#        painter.fillRect(self.contentsBoundingRect(), self._color);
+#        print('contentsSize ',self.contentsSize())
+#        print('contentsBoundingRect ',self.contentsBoundingRect())
+        contentSize = self.contentsBoundingRect()
+        x1,y1,x2,y2 = contentSize.getRect()
+#        print(x2,y2)
+        painter.drawImage(QPoint(self.mPosX, self.mPosY), self._image.scaled(x2,y2, Qt.IgnoreAspectRatio, Qt.SmoothTransformation))
+#        painter.drawImage(QPoint(self.mPosX, self.mPosY), self._image)#.scaled(self.contentsBoundingRect(),Qt.IgnoreAspectRatio, Qt.SmoothTransformation))
+#        painter.fillRect(self.contentsBoundingRect(), self._image); this doesn't work
         #print("damn")
 
     def queryFrame(self):
@@ -240,6 +267,10 @@ class CustomOpenCVItem(QQuickPaintedItem):
         self._image = self._build_image(frame)
         self.update()
 
+
+    #: This is it Bitch
+    activateVideo = pyqtProperty(bool, fget=getVideoState, fset= setVideoState, notify=activateVideoChanged)
+    activateFaceRecognition = pyqtProperty(bool, fget=getFaceRecognitionState, fset= setFaceRecognitionState, notify=activateFaceRecognitionChanged)
 
     #THis fucking works yeah !!!!!!
 #    color = pyqtProperty("QColor", fget=getColor, fset= setColor, notify=colorChanged)
