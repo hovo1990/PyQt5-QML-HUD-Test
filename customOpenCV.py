@@ -121,7 +121,7 @@ class CustomOpenCVItem(QQuickPaintedItem):
 #    readyChanged = pyqtSignal(int)
 #    readySignal = pyqtSignal()
 
-
+    cameraIdChanged = pyqtSignal()
     activateVideoChanged = pyqtSignal()
     activateFaceRecognitionChanged = pyqtSignal()
     #timerEvent
@@ -140,17 +140,10 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
         self.activateVideoStream = True
 
-        self._capture = cv2.VideoCapture(0)
-        # Take one frame to query height
-        #frame = cv.QueryFrame(self._capture)
-        ret, frame = self._capture.read()
-        height, width, depth = frame.shape
 
         self.facialRecognition = False
 
-
-        cascPath = 'face_cascade.xml'
-        self.faceCascade = cv2.CascadeClassifier(cascPath)
+        self.customCameraID = -1
 
         self.mOutH = 0 #image real rendering sizes
         self.mOutW = 0 #image real rendering sizes
@@ -159,33 +152,40 @@ class CustomOpenCVItem(QQuickPaintedItem):
         self.mPosX = 0 # top/left image coordinates, allow to render image in the center of the widget
         self.mPosY = 0 # top/left image coordinates, allow to render image in the center of the widget
 
-        self._frame = None
-        self._image = self._build_image(frame)
-        # Paint every 16 ms
-        self._timer = QTimer(self)
-        self._timer.timeout.connect(self.queryFrame)
-        self._timer.start(16)
 
 
+    def getCameraID(self):
+        return self.customCameraID
 
-    def create_blank(self,width, height, rgb_color=(0, 0, 0)):
-       """Create new image(numpy array) filled with certain color in RGB"""
-       # Create black blank image
-       image = numpy.zeros((height, width, 3), numpy.uint8)
+    def setCameraID(self, value):
+        print('fucking value is ',value)
+        if self.customCameraID!= value:
+#            print("Yay MotherFucker FaceRecognition")
+#            print("state is ",state)
+            self.customCameraID = value
 
-       # Since OpenCV uses BGR, convert the color first
-       color = tuple(reversed(rgb_color))
-       # Fill image with color
-       image[:] = color
+            try:
+                self._capture = cv2.VideoCapture(self.customCameraID)
+                # Take one frame to query height
+                #frame = cv.QueryFrame(self._capture)
+                ret, frame = self._capture.read()
+                height, width, depth = frame.shape
 
-       return image
+                cascPath = 'face_cascade.xml'
+                self.faceCascade = cv2.CascadeClassifier(cascPath)
 
-    def _build_image(self, array):
-       if numpy.ndim(array) == 2:
-           return gray2qimage(array)
-       elif numpy.ndim(array) == 3:
-           return rgb2qimage(array)
-       raise ValueError("can only convert 2D or 3D arrays")
+
+                self._frame = None
+                self._image = self._build_image(frame)
+                # Paint every 16 ms
+                self._timer = QTimer(self)
+                self._timer.timeout.connect(self.queryFrame)
+                self._timer.start(16)
+            except Exception as e:
+                print("Error in openCV camera ID  ",e)
+                sys.exit(0)
+
+
 
     def getFaceRecognitionState(self):
         return self.facialRecognition
@@ -203,6 +203,10 @@ class CustomOpenCVItem(QQuickPaintedItem):
         if self.activateVideoStream != state:
             print("Yay MotherFucker")
             print("state is ",state)
+            if state == False:
+                self._timer.stop()
+            else:
+                self._timer.start(16)
             self.activateVideoStream  = state
 
 #    def timerEvent(self, timer):
@@ -244,6 +248,26 @@ class CustomOpenCVItem(QQuickPaintedItem):
 #        painter.fillRect(self.contentsBoundingRect(), self._image); this doesn't work
         #print("damn")
 
+    def create_blank(self,width, height, rgb_color=(0, 0, 0)):
+       """Create new image(numpy array) filled with certain color in RGB"""
+       # Create black blank image
+       image = numpy.zeros((height, width, 3), numpy.uint8)
+
+       # Since OpenCV uses BGR, convert the color first
+       color = tuple(reversed(rgb_color))
+       # Fill image with color
+       image[:] = color
+
+       return image
+
+    def _build_image(self, array):
+       if numpy.ndim(array) == 2:
+           return gray2qimage(array)
+       elif numpy.ndim(array) == 3:
+           return rgb2qimage(array)
+       raise ValueError("can only convert 2D or 3D arrays")
+
+
     def queryFrame(self):
         #frame = cv.QueryFrame(self._capture)
         ret, frame = self._capture.read()
@@ -269,6 +293,7 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
 
     #: This is it Bitch
+    cameraID = pyqtProperty(int, fget=getCameraID, fset= setCameraID, notify=cameraIdChanged)
     activateVideo = pyqtProperty(bool, fget=getVideoState, fset= setVideoState, notify=activateVideoChanged)
     activateFaceRecognition = pyqtProperty(bool, fget=getFaceRecognitionState, fset= setFaceRecognitionState, notify=activateFaceRecognitionChanged)
 

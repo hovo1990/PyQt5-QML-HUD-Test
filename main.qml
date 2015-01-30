@@ -9,6 +9,7 @@ Rectangle {
     CustomOpenCVItem {
         id: testCustomOpenCVItem
         anchors.fill: parent
+        cameraID: 0
         activateVideo: true
         activateFaceRecognition: false
         //property string myColor: "green"
