@@ -129,14 +129,6 @@ class CustomOpenCVItem(QQuickPaintedItem):
     def __init__(self, parent = None):
         super(CustomOpenCVItem, self).__init__(parent)
 #        self.setFlag(QQuickItem.ItemHasContents, False)
-#        print("What the fuck")
-#        self._color = Qt.red
-
-#        timer = QTimer(self)
-#        timer.timeout.connect(self.update)
-#        timer.start(100)
-#        self.ready = 0
-#        self.startTimer(100)
 
         self.activateVideoStream = True
 
@@ -151,6 +143,7 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
         self.mPosX = 0 # top/left image coordinates, allow to render image in the center of the widget
         self.mPosY = 0 # top/left image coordinates, allow to render image in the center of the widget
+        self._timer = QTimer(self) #This is for video capture
 
 
 
@@ -178,7 +171,6 @@ class CustomOpenCVItem(QQuickPaintedItem):
                 self._frame = None
                 self._image = self._build_image(frame)
                 # Paint every 16 ms
-                self._timer = QTimer(self)
                 self._timer.timeout.connect(self.queryFrame)
                 self._timer.start(16)
             except Exception as e:
