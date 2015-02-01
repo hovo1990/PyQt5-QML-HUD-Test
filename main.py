@@ -12,13 +12,13 @@ from PyQt5.QtQuick import QQuickView
 from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
 from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlEngine
 
-from customOpenCV import CustomOpenCVItem
+from backend import customOpenCV #import CustomOpenCVItem #This works like a marvel
 
 #import myQML
 
 app = QGuiApplication(sys.argv)
 
-qmlRegisterType(CustomOpenCVItem, 'mymodule', 1, 0, 'CustomOpenCVItem')
+qmlRegisterType(customOpenCV.CustomOpenCVItem, 'myOpenCVmodule', 1, 0, 'CustomOpenCVItem')
 
 print('-----------------------------------------------------------------------')
 

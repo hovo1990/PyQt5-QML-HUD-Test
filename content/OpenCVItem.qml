@@ -1,5 +1,5 @@
 import QtQuick 2.2
-import mymodule 1.0
+import myOpenCVmodule 1.0
 
 Item {
 
