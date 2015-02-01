@@ -18,7 +18,7 @@ from backend import customOpenCV #import CustomOpenCVItem #This works like a mar
 
 app = QGuiApplication(sys.argv)
 
-qmlRegisterType(customOpenCV.CustomOpenCVItem, 'myOpenCVmodule', 1, 0, 'CustomOpenCVItem')
+qmlRegisterType(customOpenCV.CustomOpenCVItem, 'myOpenCVmodule', 1, 0, 'CustomOpenCVItem') #UberImportant
 
 print('-----------------------------------------------------------------------')
 

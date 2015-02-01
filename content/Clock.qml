@@ -8,7 +8,8 @@ Item {
 
 
     //my Part start
-    objectName: "digitalClock"
+//    objectName: "digitalClock"
+
     property string clockTime;
     property string dateInfoQTime;
     //Ends
@@ -52,8 +53,8 @@ Item {
     }
 
     Text {
-        id: clockText
-        text: clockTime
+        id: clockTime
+        text:  Qt.formatTime(new Date(),"hh:mm")
         //text: "01:20"
         anchors.right: parent.right
         anchors.rightMargin: 60
@@ -76,10 +77,22 @@ Item {
         }
     }
 
+    Timer {
+        id: timer
+        interval: 60000
+        repeat: true
+        running: true
+
+        onTriggered:
+        {
+            clockTime.text =  Qt.formatTime(new Date(),"hh:mm")
+        }
+    }
+
     BorderImage {
         id: backgroundItem
-        anchors.right: clockText.horizontalCenter
-        anchors.top: clockText.verticalCenter
+        anchors.right: clockTime.horizontalCenter
+        anchors.top: clockTime.verticalCenter
         width: Math.min(480, parent.width - 60)
         height: settingsContentColumn.height-20 + 120
         source: "images/panel_bg_inverse.png"
@@ -99,7 +112,7 @@ Item {
             y: 14
             InfoText {
                 text: "Date:"
-                text2: dateInfoQTime
+                text2: Qt.formatDate(new Date(),"ddd MM yyyy")
             }
             Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -109,28 +122,28 @@ Item {
             }              
         }
 
-        Button {
-            anchors.bottom: settingsContentColumn.bottom
-            anchors.bottomMargin: -75
-            anchors.left: settingsContentColumn.left
-            anchors.leftMargin: 32
-            text: "Back"
-            effectsOn: false
-            onClicked: {
-                root.hide();
-            }
-        }
-        Button {
-            anchors.bottom: settingsContentColumn.bottom
-            anchors.bottomMargin: -75
-            anchors.right: settingsContentColumn.right
-            anchors.rightMargin: 32
-            effectsOn: root.visible
-            text: "Order"
-            onClicked: {
-                console.debug("Order! TODO: implement");
-            }
-        }
+//        Button {
+//            anchors.bottom: settingsContentColumn.bottom
+//            anchors.bottomMargin: -75
+//            anchors.left: settingsContentColumn.left
+//            anchors.leftMargin: 32
+//            text: "Back"
+//            effectsOn: false
+//            onClicked: {
+//                root.hide();
+//            }
+//        }
+//        Button {
+//            anchors.bottom: settingsContentColumn.bottom
+//            anchors.bottomMargin: -75
+//            anchors.right: settingsContentColumn.right
+//            anchors.rightMargin: 32
+//            effectsOn: root.visible
+//            text: "Order"
+//            onClicked: {
+//                console.debug("Order! TODO: implement");
+//            }
+//        }
     }
 }
 

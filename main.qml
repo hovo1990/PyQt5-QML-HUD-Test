@@ -60,7 +60,7 @@ Item {
     PowerButton{}
 
 
-//    Clock{}
+    Clock{}
 
 //    AudioIndic{}
 
