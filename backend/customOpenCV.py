@@ -15,7 +15,6 @@ except:
     from PyQt5 import QtWidgets
 
 try:
-
     import cv2
     import sys
     import numpy
@@ -139,7 +138,7 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
         self.mOutH = 0 #image real rendering sizes
         self.mOutW = 0 #image real rendering sizes
-        self.mImgratio = 4.0/3.0 # Default image ratio
+        self.mImgratio = 16.0/9.0 # Default image ratio
 
         self.mPosX = 0 # top/left image coordinates, allow to render image in the center of the widget
         self.mPosY = 0 # top/left image coordinates, allow to render image in the center of the widget
@@ -159,6 +158,12 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
             try:
                 self._capture = cv2.VideoCapture(self.customCameraID)
+                size = (640,480)
+#                self._capture.set(CV_CAP_PROP_FPS,30)
+                self._capture.set(4, size[0])
+                self._capture.set(5,size[1])
+#                self._capture.set(6,30)
+#                self._capture.set(15, 0.1)
                 # Take one frame to query height
                 #frame = cv.QueryFrame(self._capture)
                 ret, frame = self._capture.read()

@@ -1,4 +1,7 @@
-import QtQuick 2.0
+import QtQuick 2.2
+
+//import QtQuick.Controls 1.3
+//import QtQuick.Controls.Styles 1.3
 
 
 Item {
@@ -119,7 +122,41 @@ Item {
                 width: parent.width - 32
                 height: 1
                 color: "#404040"
-            }              
+            }
+//            Calendar { #Not Yet it's available on version 1.3
+//                    id: calendar
+//                    anchors.centerIn: parent
+//                    style: CalendarStyle {
+//                        dayDelegate: Item {
+//                            Rectangle {
+//                                id: rect
+//                                anchors.fill: parent
+
+//                                Label {
+//                                    id: dayDelegateText
+//                                    text: styleData.date.getDate()
+//                                    anchors.centerIn: parent
+//                                    horizontalAlignment: Text.AlignRight
+//                                    font.pixelSize: Math.min(parent.height/3, parent.width/3)
+//                                    color: styleData.selected ? "red" : "black"
+//                                    font.bold: styleData.selected
+//                                }
+//                                MouseArea {
+//                                    anchors.horizontalCenter: parent.horizontalCenter
+//                                    anchors.verticalCenter: parent.verticalCenter
+//                                    width: styleData.selected ? parent.width / 2 : 0
+//                                    height: styleData.selected ? parent.height / 2 : 0
+//                                    Rectangle {
+//                                        anchors.fill: parent
+//                                        color: "transparent"
+//                                        border.color: "darkorange"
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+
         }
 
 //        Button {
