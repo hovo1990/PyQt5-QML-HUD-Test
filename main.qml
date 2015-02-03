@@ -62,7 +62,7 @@ Item {
 
     Clock{}
 
-//    AudioIndic{}
+    AudioIndic{}
 
 
 //    WifiIndic{}

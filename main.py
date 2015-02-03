@@ -13,15 +13,24 @@ from PyQt5.QtCore import pyqtProperty, QCoreApplication, QObject, QUrl
 from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlEngine
 
 from backend import customOpenCV #import CustomOpenCVItem #This works like a marvel
+from backend import audioComponent #import CustomOpenCVItem #This works like a marvel
+
+
 
 #import myQML
 
 app = QGuiApplication(sys.argv)
 
 qmlRegisterType(customOpenCV.CustomOpenCVItem, 'myOpenCVmodule', 1, 0, 'CustomOpenCVItem') #UberImportant
+qmlRegisterType(audioComponent.CustomAudioIndicatorItem, 'myAudioModule', 1, 0, 'CustomAudioIndicatorItem') #UberImportant
+
 
 print('-----------------------------------------------------------------------')
 
+
+
+def printTest():
+    print("Hello world")
 
 qmlFile = 'main.qml'
 
@@ -35,6 +44,9 @@ view.engine().quit.connect(app.quit)
 engine = view.engine()
 view.setSource(QUrl(qmlFile)) # putting at the end didn't solve referenceError 'This is supposed to solve all referenceErrors
 
+object = view.rootObject()
+print('root object is ',object)
+#object.ValueChanged.connect(printTest)
 
 
 view.show()

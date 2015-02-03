@@ -59,6 +59,42 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlProperty
 
 
+try:
+    from PySide import QtCore
+    from PySide import QtWidgets
+except:
+    from PyQt5.QtCore import pyqtSlot as Slot
+    from PyQt5 import QtCore
+    from PyQt5 import QtWidgets
+
+try:
+    import sys
+
+    from PyQt5.QtCore import (pyqtProperty, pyqtSignal, Q_CLASSINFO, QCoreApplication, QDate, QObject, QTime, QUrl)
+    from PyQt5.QtCore import QTimerEvent
+    from PyQt5.QtCore import QTimer
+
+    from PyQt5.QtCore import qDebug
+    from PyQt5.QtGui import QPainter
+    from PyQt5.QtWidgets import QStyleOptionGraphicsItem
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QGraphicsItem
+
+    from PyQt5.QtQuick import QQuickItem
+    from PyQt5.QtCore import pyqtProperty
+
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtCore import QSize
+    from PyQt5.QtCore import QPoint
+    from PyQt5.QtCore import QTimer
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtGui import QImage
+except Exception as e:
+    print("Error in importing modules ",e)
+
+
+
+
 
 class Audio_QProcess(QProcess):
 
@@ -104,9 +140,15 @@ class Audio_QProcess(QProcess):
 
 
 
-class AudioIndicator(QObject):
+class CustomAudioIndicatorItem(QObject):
+
+
+    currentVolumeSignal= pyqtSignal()
+    audioVolumeChanged = pyqtSignal()
+    muteSystemAudioActivatedChanged = pyqtSignal()
+
     def __init__(self,viewItem, parent=None):
-        super(AudioIndicator, self).__init__(parent)
+        super(CustomAudioIndicatorItem, self).__init__(parent)
 
         self.qProcess = Audio_QProcess()
         self.qProcess.readyReadStandardOutput.connect(self.getRealCurrentVolume)
@@ -117,32 +159,8 @@ class AudioIndicator(QObject):
 
         self.muteActivated = False
 
-        self.viewItem = viewItem
-        rootObject = self.viewItem.rootObject()
-        #print('rootObject audio Indic ', rootObject)
-
-
-        self.rootContext = self.viewItem.rootContext()
-
-        #It fucking worked Yeahhhhhhhhh
-        muteButton = rootObject.findChild(QObject, "muteAudioButton")
-        muteButton.messageRequired.connect(self.muteSystemAudio)
-        ##win = self.qmlEngine.rootObjects()[0]
-        ##print('win is ',win)
-
-        self.audioSlider = rootObject.findChild(QObject, "audioIndicSlider")
-        self.audioSlider.valueChanged.connect(self.changeVolume)
 
         self.getCurrentVolume()
-
-
-
-        self.current_timer = QTimer()
-        #self.current_timer.setSingleShot(True)
-        self.current_timer.timeout.connect(self.changeVol)
-        self.current_timer.start(700)
-        #print('fucking button ',button)
-        #button.closeHUD.connect(self.closeHUDfunc)
 
 
     def changeVol(self):
@@ -159,14 +177,6 @@ class AudioIndicator(QObject):
         command = "amixer  -q -D pulse sset Master " + ("%s%%" %(str(audio)))
         os.system(command)
 
-    def changeVolume(self):
-        audioValue = float(QQmlProperty.read(self.audioSlider, "value"))
-        #self.audioSlider.read(QObject, 'value')
-        self.realValue = audioValue
-        #print('fucking real value is ', self.realValue)
-        #print('fucking value is ')
-        #self.setVolumeSlider(realValue) #This is problematic
-
 
 
 
@@ -178,10 +188,6 @@ class AudioIndicator(QObject):
 
 
 
-    def setVolumeSlider(self,value):
-        self.rootContext.setContextProperty("audioSliderValue", value)
-
-
     def getCurrentVolume(self):
         #print('piece of shit motherfucker')
         self.qProcess.start('amixer get Master')
@@ -191,24 +197,43 @@ class AudioIndicator(QObject):
         self.currVolume = self.qProcess.getData()
         self.setVolume = self.convertValToQMLCombatible(self.currVolume)
         #print('currentVolume is ',self.setVolume)
-        self.setVolumeSlider(self.setVolume)
 
 
+    def getAudioVolume(self):
+        return self.currVolume
 
+    def setAudioVolume(self,value):
+#        print("Yolo fucker")
+#        print("value is ",value)
+        self.currVolume = value
+        self.setSystemAudio(self.currVolume)
 
-    def muteSystemAudio(self):
-        if self.muteActivated == False:
+    def getMuteState(self):
+        return self.muteActivated
+
+    def setMuteState(self,value):
+        print('mother fucking',value)
+        if value == True:
             self.muteActivated = True
             os.system('amixer -q -D pulse sset Master 0%')
-            self.setVolumeSlider(0.0)
+#            self.setVolumeSlider(0.0)
         else:
             self.muteActivated = False
-            #print('fucking darn ',self.currVolume)
             command = "amixer -q -D pulse sset Master " + ("%s%%" %(str(self.currVolume)))
             #print('command is ',command)
             os.system(command)
-            setVolume = self.convertValToQMLCombatible(self.currVolume)
-            self.setVolumeSlider(setVolume)
+#            setVolume = self.convertValToQMLCombatible(self.currVolume)
+#            self.setVolumeSlider(setVolume)
+
+
+    audioVolume = pyqtProperty(float, fget=getAudioVolume, fset= setAudioVolume, notify= audioVolumeChanged)
+    muteAudio = pyqtProperty(bool, fget=getMuteState, fset= setMuteState, notify=muteSystemAudioActivatedChanged)
+
+
+#   activateVideo = pyqtProperty(bool, fget=getVideoState, fset= setVideoState, notify=activateVideoChanged)
+#    activateFaceRecognition = pyqtProperty(bool, fget=getFaceRecognitionState, fset= setFaceRecognitionState, notify=activateFaceRecognitionChanged)
+
+
 
     #def closeHUDfunc(self):
         #print('Fuck yeah close HUD')

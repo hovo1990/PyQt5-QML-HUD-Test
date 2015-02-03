@@ -1,5 +1,6 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import myAudioModule 1.0
 
 // Need to change my custom button name, else there's a collision
 
@@ -14,6 +15,14 @@ Item {
     //end
 
     anchors.fill: parent
+
+    CustomAudioIndicatorItem{
+        id: myAudioIndicItem
+        audioVolume: audioSliderValue
+        muteAudio: false
+    }
+
+
 
     function show() {
         isShown = true;
@@ -97,22 +106,23 @@ Item {
             MyCustomButton {
                 //id:closeHUDButtonID
                 id: myCustomButtonAudio
-                signal messageRequired
-                objectName: "muteAudioButton"
-                //signal qmlSignal(string msg)
+
                 anchors.horizontalCenter: parent.horizontalCenter
                 effectsOn: root.visible
                 text: "Mute"
                 onClicked: {
-                    if (text === "Mute")
-                         myCustomButtonAudio.text = "Unmute";
-                         
-                    else
+                    if (text === "Mute") {
+                        myCustomButtonAudio.text = "Unmute";
+                        myAudioIndicItem.muteAudio = true;
+                        currentAudioSlider.value = 0;
+                   } else if( text ==="Unmute"){
                         myCustomButtonAudio.text = "Mute";
-                    messageRequired()
+                        myAudioIndicItem.muteAudio = false;
+                        currentAudioSlider.value = audioSliderValue;
                     //console.debug("Order! TODO: implement");
-                }
+                    }
 
+              }
             }
             Rectangle {
                 id: rectangleColumnAudio
@@ -124,85 +134,19 @@ Item {
 
             Slider {
                 //objectName: "audioSlider"
+                id: currentAudioSlider
                 height: 400
-                objectName: "audioIndicSlider"
                 anchors.horizontalCenter: parent.horizontalCenter
-                //anchors.verticalCenter: parent.verticalCenter
                 orientation: Qt.Vertical
                 value: audioSliderValue //AudioSliderValue
-                // onValueChanged:{
-                //     console.debug(value);
-                // }
+                onValueChanged:{
+                    console.debug(pressed);
+                    if (pressed === false)
+                        myAudioIndicItem.audioVolume = value
+                     //console.debug(value);
+                 }
             }
         }
-        
-
-       
-
-
-            // MyCustomButton {
-            //     //id:closeHUDButtonID
-            //     id: myCustomButtonAudio
-            //     signal messageRequired
-            //     objectName: "muteAudio"
-            //     //signal qmlSignal(string msg)
-            //     anchors.top: parent.top
-            //     anchors.topMargin: 30
-            //     anchors.horizontalCenter: parent.horizontalCenter
-            //     effectsOn: root.visible
-            //     text: "Mute"
-            //     onClicked: {
-            //         // if text === "Mute":
-            //         //     text = "Unmute"
-            //         messageRequired()
-            //         //console.debug("Order! TODO: implement");
-            //     }
-
-            // }
-            // Rectangle {
-            //     id: rectangleColumnAudio
-            //     anchors.bottom: myCustomButtonAudio.bottom
-            //     anchors.bottomMargin: -10
-            //     anchors.horizontalCenter: myCustomButtonAudio.horizontalCenter
-            //     width: parent.width -50
-            //     height: 2
-            //     color: "#404040"
-            // }      
-
-            // Slider {
-            //     //width:  parent.width
-            //     height: 200
-            //     anchors.bottom: rectangleColumnAudio.bottom
-            //     anchors.bottomMargin: -100
-            //     anchors.horizontalCenter: parent.horizontalCenter
-            //     //anchors.verticalCenter: parent.verticalCenter
-            //     orientation: Qt.Vertical
-            //     value: 0.5
-            // }
-
-        // Slider {
-        //     //width:  parent.width
-        //     height: parent.height -100
-        //     anchors.bottom: parent.bottom
-        //     anchors.bottomMargin: -85
-        //     anchors.horizontalCenter: parent.horizontalCenter
-        //     anchors.verticalCenter: parent.verticalCenter
-        //     orientation: Qt.Vertical
-        //     value: 0.5
-        // }
-
-
-        // Button {
-        //     anchors.bottom: settingsContentColumn.bottom
-        //     anchors.bottomMargin: -75
-        //     anchors.left: settingsContentColumn.left
-        //     anchors.leftMargin: 32
-        //     text: "Back"
-        //     effectsOn: false
-        //     onClicked: {
-        //         root.hide();
-        //     }
-        // }
     }
 }
 

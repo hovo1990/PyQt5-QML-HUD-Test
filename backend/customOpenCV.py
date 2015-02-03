@@ -160,9 +160,9 @@ class CustomOpenCVItem(QQuickPaintedItem):
                 self._capture = cv2.VideoCapture(self.customCameraID)
                 size = (640,480)
 #                self._capture.set(CV_CAP_PROP_FPS,30)
-                self._capture.set(4, size[0])
-                self._capture.set(5,size[1])
-#                self._capture.set(6,30)
+#                self._capture.set(4, size[0])
+#                self._capture.set(5,size[1])
+##                self._capture.set(6,30)
 #                self._capture.set(15, 0.1)
                 # Take one frame to query height
                 #frame = cv.QueryFrame(self._capture)
