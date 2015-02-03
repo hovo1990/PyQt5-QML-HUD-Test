@@ -12,6 +12,7 @@ Item {
 
     //my Part Start
     property real audioSliderValue: 0.5
+    property real tempAudioSliderValue;
     //end
 
     anchors.fill: parent
@@ -114,11 +115,12 @@ Item {
                     if (text === "Mute") {
                         myCustomButtonAudio.text = "Unmute";
                         myAudioIndicItem.muteAudio = true;
+                        tempAudioSliderValue = currentAudioSlider.value
                         currentAudioSlider.value = 0;
                    } else if( text ==="Unmute"){
                         myCustomButtonAudio.text = "Mute";
                         myAudioIndicItem.muteAudio = false;
-                        currentAudioSlider.value = audioSliderValue;
+                        currentAudioSlider.value = tempAudioSliderValue;
                     //console.debug("Order! TODO: implement");
                     }
 
@@ -140,9 +142,10 @@ Item {
                 orientation: Qt.Vertical
                 value: audioSliderValue //AudioSliderValue
                 onValueChanged:{
-                    console.debug(pressed);
-                    if (pressed === false)
-                        myAudioIndicItem.audioVolume = value
+//                    console.debug(pressed);
+//                    if (pressed != true)
+//                        console.debug(value);
+                        audioSliderValue = value
                      //console.debug(value);
                  }
             }

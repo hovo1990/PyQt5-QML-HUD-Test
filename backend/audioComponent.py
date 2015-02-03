@@ -171,12 +171,6 @@ class CustomAudioIndicatorItem(QObject):
             self.setSystemAudio(self.setVolume)
 
 
-    def setSystemAudio(self,audioValue):
-        audio  = self.convertValToPyCombatible(audioValue)
-        #-q is for quiet
-        command = "amixer  -q -D pulse sset Master " + ("%s%%" %(str(audio)))
-        os.system(command)
-
 
 
 
@@ -202,17 +196,27 @@ class CustomAudioIndicatorItem(QObject):
     def getAudioVolume(self):
         return self.currVolume
 
+
+    def setSystemAudio(self,audioValue):
+        audio  = self.convertValToPyCombatible(audioValue)
+        self.currVolume = audio
+        #-q is for quiet
+        command = "amixer  -q -D pulse sset Master " + ("%s%%" %(str(audio)))
+        os.system(command)
+
+
+
     def setAudioVolume(self,value):
 #        print("Yolo fucker")
 #        print("value is ",value)
-        self.currVolume = value
-        self.setSystemAudio(self.currVolume)
+        currVolume = value
+        self.setSystemAudio(currVolume)
 
     def getMuteState(self):
         return self.muteActivated
 
     def setMuteState(self,value):
-        print('mother fucking',value)
+#        print('mother fucking',value)
         if value == True:
             self.muteActivated = True
             os.system('amixer -q -D pulse sset Master 0%')
