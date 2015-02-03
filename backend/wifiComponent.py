@@ -66,12 +66,52 @@ from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QLabel,
         QMainWindow, QMenu, QMessageBox, QScrollArea, QSizePolicy)
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlProperty
 
+from PyQt5.QtCore import QProcess, QTimer
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QTime, QTimer, QDate
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QObject, QUrl, Qt
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtQml import QQmlApplicationEngine, QQmlProperty
 
 
-icons_folder = "/home/john1990/Dropbox/GitHub/HUD/QGS_test/customWidgets/icons/"
+try:
+    from PySide import QtCore
+    from PySide import QtWidgets
+except:
+    from PyQt5.QtCore import pyqtSlot as Slot
+    from PyQt5 import QtCore
+    from PyQt5 import QtWidgets
+
+try:
+    import sys
+
+    from PyQt5.QtCore import (pyqtProperty, pyqtSignal, Q_CLASSINFO, QCoreApplication, QDate, QObject, QTime, QUrl)
+    from PyQt5.QtCore import QTimerEvent
+    from PyQt5.QtCore import QTimer
+
+    from PyQt5.QtCore import qDebug
+    from PyQt5.QtGui import QPainter
+    from PyQt5.QtWidgets import QStyleOptionGraphicsItem
+    from PyQt5.QtWidgets import QWidget
+    from PyQt5.QtWidgets import QGraphicsItem
+
+    from PyQt5.QtQuick import QQuickItem
+    from PyQt5.QtCore import pyqtProperty
+
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtCore import QSize
+    from PyQt5.QtCore import QPoint
+    from PyQt5.QtCore import QTimer
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtGui import QImage
+except Exception as e:
+    print("Error in importing modules ",e)
+
+
 import os,sys
 
-#from ui_wifi_Info import Ui_Wifi_Info
 
 
 
@@ -172,44 +212,110 @@ class Wifi_QProcess(QProcess):
 
 #class wifi_Info(QWidget,Ui_Wifi_Info):
 
-class wifi_Info(QObject):
-    def __init__(self, viewItem, parent = None):
-        super(wifi_Info, self).__init__(parent)
+class CustomWifiIndicatorItem(QObject):
+
+    IeeeValChanged= pyqtSignal(str)
+    EssidValChanged= pyqtSignal(str)
+    ModeValChanged= pyqtSignal(str)
+    FrequencyValChanged= pyqtSignal(str)
+    Access_PointValChanged = pyqtSignal(str)
+    BitRateValChanged= pyqtSignal(str)
+    LinkQualityValChanged= pyqtSignal(str)
+    SignalLevelValChanged= pyqtSignal(str)
+
+
+    def __init__(self, parent = None):
+        super(CustomWifiIndicatorItem, self).__init__(parent)
+
+
+        self.ieee_RES = 'test'
+        self.essid_RES = 'test'
+        self.mode_RES = 'test'
+        self.frequency_RES =  'test'
+        self.access_Point_RES = 'test'
+        self.bitRate_RES = 'test'
+        self.linkQuality_RES = 'test'
+        self.signalLevel_RES = 'test'
+        self.matrix  = [ self.ieee_RES, self.essid_RES,self.linkQuality_RES]
 
         self.qProcess = Wifi_QProcess()
 
-        self.viewItem = viewItem
-
-
-        self.rootContext = self.viewItem.rootContext()
-        #qProcess.setProcessChannelMode(QProcess.MergedChannels)
-
-        rootObject = self.viewItem.rootObject()
-        self.wifiIndicator = rootObject.findChild(QObject, "wifiIndicator") #This works
-        #self.wifiIndicator = rootObject.findChild(rootObject, "myWifiIndicator")
-
-        timer = QTimer(self)
-        timer.timeout.connect(self.update)
-        timer.start(700)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update)
+        self.timer.start(700)
 
 
     def update(self):
         self.qProcess.start("iwconfig")
         #self.qProcess.kill()
         final_data = self.qProcess.getData()
-        #print(final_data)
+#        print('final data is ',final_data)
         if len(final_data)> 1:
             self.updateValues(final_data)
 
     def updateValues(self,values):
-        QQmlProperty.write(self.wifiIndicator, "ieee_RES",str(values[0]) )
-        QQmlProperty.write(self.wifiIndicator, "essid_RES",str(values[1]) )
-        QQmlProperty.write(self.wifiIndicator, "mode_RES",str(values[2]) )
-        QQmlProperty.write(self.wifiIndicator, "frequency_RES",str(values[3]) )
-        QQmlProperty.write(self.wifiIndicator, "access_Point_RES",str(values[4]) )
-        QQmlProperty.write(self.wifiIndicator, "bitRate_RES",str(values[5]) )
-        QQmlProperty.write(self.wifiIndicator, "linkQuality_RES",str(values[6]) )
-        QQmlProperty.write(self.wifiIndicator, "signalLevel_RES",str(values[7]) )
+#        print("fuck motherfucker")
+#        print('values here is', values)
+        self.ieee_RES = str(values[0])
+        self.essid_RES = str(values[1])
+        self.mode_RES = str(values[2])
+        self.frequency_RES =  str(values[3])
+        self.access_Point_RES = str(values[4])
+        self.bitRate_RES = str(values[5])
+        self.linkQuality_RES =str(values[6])
+        self.signalLevel_RES = str(values[7])
+
+
+        self.IeeeValChanged.emit(str(values[0]))
+        self.EssidValChanged.emit(str(values[1]))
+        self.ModeValChanged.emit(str(values[2]))
+        self.FrequencyValChanged.emit(str(values[3]))
+        self.Access_PointValChanged.emit(str(values[4]))
+        self.BitRateValChanged.emit(str(values[5]))
+        self.LinkQualityValChanged.emit(str(values[6]))
+        self.SignalLevelValChanged.emit(str(values[7]))
+
+
+
+
+
+
+    def getIeee_RES(self):
+        return self.ieee_RES
+
+    def setIeee_RES(self,value):
+        self.ieee_RES = value
+
+    def getEssid_RES(self):
+        return self.essid_RES
+
+    def getMode_RES(self):
+        return self.mode_RES
+
+    def getFrequency_RES(self):
+        return self.frequency_RES
+
+    def getAccess_Point_RES(self):
+        return self.access_Point_RES
+
+    def getBitRate_RES(self):
+        return self.bitRate_RES
+
+    def getLinkQuality_RES(self):
+        return self.linkQuality_RES
+
+    def getSignalLevel_RES(self):
+        return self.signalLevel_RES
+
+
+    ieeeVal = pyqtProperty(str, fget=getIeee_RES, fset=setIeee_RES,  notify =  IeeeValChanged)
+    essidVal = pyqtProperty(str, fget=getEssid_RES, notify =  EssidValChanged)
+    modeVal= pyqtProperty(str, fget=getMode_RES, notify =  ModeValChanged)
+    frequencyVal = pyqtProperty(str, fget=getFrequency_RES, notify =  FrequencyValChanged)
+    access_PointVal = pyqtProperty(str, fget=getAccess_Point_RES, notify =  Access_PointValChanged)
+    bitRateVal = pyqtProperty(str, fget=getBitRate_RES, notify =  BitRateValChanged)
+    linkQualityVal = pyqtProperty(str, fget=getLinkQuality_RES, notify =  LinkQualityValChanged)
+    signalLevelVal = pyqtProperty(str, fget=getSignalLevel_RES, notify =  SignalLevelValChanged)
 
 
 #if __name__ == '__main__':

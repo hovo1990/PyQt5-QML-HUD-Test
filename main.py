@@ -14,6 +14,7 @@ from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlEngine
 
 from backend import customOpenCV #import CustomOpenCVItem #This works like a marvel
 from backend import audioComponent #import CustomOpenCVItem #This works like a marvel
+from backend import wifiComponent #import CustomOpenCVItem #This works like a marvel
 
 
 
@@ -23,6 +24,7 @@ app = QGuiApplication(sys.argv)
 
 qmlRegisterType(customOpenCV.CustomOpenCVItem, 'myOpenCVmodule', 1, 0, 'CustomOpenCVItem') #UberImportant
 qmlRegisterType(audioComponent.CustomAudioIndicatorItem, 'myAudioModule', 1, 0, 'CustomAudioIndicatorItem') #UberImportant
+qmlRegisterType(wifiComponent.CustomWifiIndicatorItem, 'myWifiModule', 1, 0, 'CustomWifiIndicatorItem') #UberImportant
 
 
 print('-----------------------------------------------------------------------')

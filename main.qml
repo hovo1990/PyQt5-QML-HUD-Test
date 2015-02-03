@@ -65,7 +65,7 @@ Item {
     AudioIndic{}
 
 
-//    WifiIndic{}
+    WifiIndic{}
 
 //    /*
 //    BlueIndic{

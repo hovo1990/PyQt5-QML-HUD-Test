@@ -20,10 +20,10 @@ Item {
     CustomAudioIndicatorItem{
         id: myAudioIndicItem
         audioVolume: audioSliderValue
-        muteAudio: false
+//        muteAudio: false //This works commented
     }
 
-
+    property bool testMek: myAudioIndicItem.muteAudio
 
     function show() {
         isShown = true;
@@ -142,7 +142,7 @@ Item {
                 orientation: Qt.Vertical
                 value: audioSliderValue //AudioSliderValue
                 onValueChanged:{
-//                    console.debug(pressed);
+                    console.debug(testMek);
 //                    if (pressed != true)
 //                        console.debug(value);
                         audioSliderValue = value

@@ -147,7 +147,7 @@ class CustomAudioIndicatorItem(QObject):
     audioVolumeChanged = pyqtSignal()
     muteSystemAudioActivatedChanged = pyqtSignal()
 
-    def __init__(self,viewItem, parent=None):
+    def __init__(self, parent=None):
         super(CustomAudioIndicatorItem, self).__init__(parent)
 
         self.qProcess = Audio_QProcess()

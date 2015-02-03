@@ -1,5 +1,5 @@
-import QtQuick 2.0
-
+import QtQuick 2.2
+import myWifiModule 1.0
 
 Item {
     id: root
@@ -7,16 +7,27 @@ Item {
     property bool isShown: false
     
 
-    //my Part start
-    objectName: "wifiIndicator"
-    property string ieee_RES;
-    property string essid_RES;
-    property string mode_RES;
-    property string frequency_RES;
-    property string access_Point_RES;
-    property string bitRate_RES;
-    property string linkQuality_RES;
-    property string signalLevel_RES;
+//    my Part start
+    CustomWifiIndicatorItem{
+        id: myWifiIndicItem
+
+    }
+
+
+//    Connections{
+//            target: myWifiIndicItem;
+//            onIeeeValChanged: print('Selected test: ' + myWifiIndicItem.ieeeVal)
+//        }
+
+    property string ieee_RES: myWifiIndicItem.ieeeVal;
+    property string essid_RES : myWifiIndicItem.essidVal;
+    property string access_Point_RES : myWifiIndicItem.modeVal;
+    property string mode_RES: myWifiIndicItem.frequencyVal;
+    property string frequency_RES : myWifiIndicItem.access_PointVal;
+
+    property string bitRate_RES: myWifiIndicItem.bitRateVal;
+    property string linkQuality_RES: myWifiIndicItem.linkQualityVal;
+    property string signalLevel_RES: myWifiIndicItem.signalLevelVal ;
     //Ends
 
 
