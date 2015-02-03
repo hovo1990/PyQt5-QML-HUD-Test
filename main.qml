@@ -23,6 +23,9 @@ Item {
         property bool showShootingStarParticles: true
         property bool showLighting: true
         property bool showColors: true
+
+        property bool cameraActive: true
+        property bool facialRecognitionActive: false
     }
 
     MainView {
@@ -66,6 +69,8 @@ Item {
 
 
     WifiIndic{}
+
+    CameraOptions{}
 
 //    /*
 //    BlueIndic{

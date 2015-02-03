@@ -13,12 +13,6 @@ Item {
 
     }
 
-
-//    Connections{
-//            target: myWifiIndicItem;
-//            onIeeeValChanged: print('Selected test: ' + myWifiIndicItem.ieeeVal)
-//        }
-
     property string ieee_RES: myWifiIndicItem.ieeeVal;
     property string essid_RES : myWifiIndicItem.essidVal;
     property string access_Point_RES : myWifiIndicItem.modeVal;
@@ -73,7 +67,7 @@ Item {
         id: wifiIcon
         height:35; width:35 //Widget size
         anchors.right: parent.right
-        anchors.rightMargin: 230
+        anchors.rightMargin: 220
         anchors.top: parent.top
         anchors.topMargin: 10
         source: "icons/wifi36.png"

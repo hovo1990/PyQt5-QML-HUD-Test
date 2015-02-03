@@ -13,8 +13,8 @@ Item {
         id: testCustomOpenCVItem
         anchors.fill: parent
         cameraID: 0
-        activateVideo: true
-        activateFaceRecognition: false
+        activateVideo: settings.cameraActive
+        activateFaceRecognition: settings.facialRecognitionActive
         //property string myColor: "green"
 
     }

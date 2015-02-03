@@ -151,7 +151,7 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
     def setCameraID(self, value):
         print('fucking value is ',value)
-        if self.customCameraID!= value:
+        if self.customCameraID != value:
 #            print("Yay MotherFucker FaceRecognition")
 #            print("state is ",state)
             self.customCameraID = value
@@ -163,14 +163,12 @@ class CustomOpenCVItem(QQuickPaintedItem):
 #                self._capture.set(4, size[0])
 #                self._capture.set(5,size[1])
 ##                self._capture.set(6,30)
-#                self._capture.set(15, 0.1)
-                # Take one frame to query height
-                #frame = cv.QueryFrame(self._capture)
                 ret, frame = self._capture.read()
                 height, width, depth = frame.shape
 
-                cascPath = 'face_cascade.xml'
-                self.faceCascade = cv2.CascadeClassifier(cascPath)
+                self.cascPath = 'face_cascade.xml'
+                self.faceCascade = cv2.CascadeClassifier(self.cascPath)
+#                self.faceCascade.load(cascPath)
 
 
                 self._frame = None
@@ -189,8 +187,8 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
     def setFaceRecognitionState(self,state):
         if self.facialRecognition != state:
-            print("Yay MotherFucker FaceRecognition")
-            print("state is ",state)
+#            print("Yay MotherFucker FaceRecognition")
+#            print("state is ",state)
             self.facialRecognition  = state
 
     def getVideoState(self):
@@ -217,20 +215,6 @@ class CustomOpenCVItem(QQuickPaintedItem):
 #            print('yo ',self.ready)
 ##            qDebug(self.readyChanged)
 #            self.readyChanged.emit(self.ready)
-
-#    def getReadyNumber(self):
-#        return self.ready
-
-##    @pyqtProperty("QColor", fget = color, fset = setColor, notify = colorChanged)
-#    def getColor(self):
-#        return self._color
-
-##    @color.setter
-#    def setColor(self,color):
-#        if self._color != color:
-#            self._color = color
-#            self.colorChanged.emit()
-#            self.update()
 
 
 
@@ -271,13 +255,14 @@ class CustomOpenCVItem(QQuickPaintedItem):
         #: It Works Yeah !!!!!!!!!!!!!
 
         if self.facialRecognition == True:
+            print("darn yikes")
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
             faces = self.faceCascade.detectMultiScale(
                 gray,
                 scaleFactor=1.1,
                 minNeighbors=5,
-                minSize=(30, 30),
+                minSize=(30, 30)
                 #flags=cv2.cv.CV_HAAR_SCALE_IMAGE
             )
 
@@ -294,8 +279,5 @@ class CustomOpenCVItem(QQuickPaintedItem):
     activateVideo = pyqtProperty(bool, fget=getVideoState, fset= setVideoState, notify=activateVideoChanged)
     activateFaceRecognition = pyqtProperty(bool, fget=getFaceRecognitionState, fset= setFaceRecognitionState, notify=activateFaceRecognitionChanged)
 
-    #THis fucking works yeah !!!!!!
-#    color = pyqtProperty("QColor", fget=getColor, fset= setColor, notify=colorChanged)
-#    value = pyqtProperty(int, fget=getReadyNumber, notify=readyChanged)
 
 
