@@ -22,6 +22,7 @@ import QtQuick 2.2
 
 Item {
     id:root
+//    opacity: 0.4
 
     property bool panelHidden: true
     property int pageIndex
@@ -89,6 +90,7 @@ Item {
     Image {
         id: background
         source: "images/sidebar_leave_top.png"
+        opacity: 0.4 // test
         width: parent.width
         height: parent.height
         x: (mode == 0) ? -8 : 8

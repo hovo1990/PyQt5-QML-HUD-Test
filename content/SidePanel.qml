@@ -23,6 +23,7 @@ import QtQuick 2.2
 Item {
     id:root
 
+
     property int currentPageIndex: 0
     property alias pages: container.children
 
@@ -35,6 +36,7 @@ Item {
 
     width: 300
     height: parent.height
+    opacity: 0.5
     x: (mode == 0) ? -width -1 : parent.width
     visible: false
 
@@ -143,6 +145,7 @@ Item {
     MouseArea { anchors.fill: parent; z: -1 }
 
     Image {
+//        opacity: 0.2
         id: headerBckg
         source: "images/sidebar_top.png"
         width: parent.width
@@ -151,7 +154,7 @@ Item {
 
     Rectangle {
         id: background
-
+        opacity: 0.2
         width: parent.width - 0.5 // this forces the painter to round down.
         // note: images seem to round down by default
         height: parent.height - headerBckg.height
@@ -199,6 +202,10 @@ Item {
         x: (root.mode == 0) ? parent.width : -width
         y: style.sideBarHeaderHeight + 50
         z: 1
+    }
+
+    Coverview{
+
     }
 
     Column {
