@@ -31,9 +31,6 @@ print('-----------------------------------------------------------------------')
 
 
 
-def printTest():
-    print("Hello world")
-
 qmlFile = 'main.qml'
 
 #qmlFile = "qrc:data/"

@@ -196,8 +196,8 @@ class CustomOpenCVItem(QQuickPaintedItem):
 
     def setVideoState(self, state):
         if self.activateVideoStream != state:
-            print("Yay MotherFucker")
-            print("state is ",state)
+#            print("Yay MotherFucker")
+#            print("state is ",state)
             if state == False:
                 self._timer.stop()
             else:
