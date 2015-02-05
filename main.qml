@@ -32,6 +32,10 @@ Item {
         id: mainView
     }
 
+    SidePanel{
+        id: sidePanelTest
+    }
+
     /*
     InfoView {
         id: infoView

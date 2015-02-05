@@ -107,7 +107,6 @@ Item {
             width: parent.width
             y: 14
             InfoText {
-                //objectName: "IEEE_res"
                 text: "IEEE:"
                 text2: ieee_RES
             }

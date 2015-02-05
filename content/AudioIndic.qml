@@ -135,14 +135,13 @@ Item {
             }      
 
             Slider {
-                //objectName: "audioSlider"
                 id: currentAudioSlider
                 height: 400
                 anchors.horizontalCenter: parent.horizontalCenter
                 orientation: Qt.Vertical
                 value: audioSliderValue //AudioSliderValue
                 onValueChanged:{
-                    console.debug(testMek);
+//                    console.debug(testMek);
 //                    if (pressed != true)
 //                        console.debug(value);
                         audioSliderValue = value
