@@ -36,9 +36,11 @@ Item {
 
     width: 300
     height: parent.height
-    opacity: 0.5
+    opacity: 0.0 // allright
     x: (mode == 0) ? -width -1 : parent.width
     visible: false
+
+
 
     state: 'hidden'
 
@@ -142,7 +144,24 @@ Item {
 
     TabletCommonStyle {id:style}
 
-    MouseArea { anchors.fill: parent; z: -1 }
+    MouseArea {
+        hoverEnabled: true  //my part
+
+//        containsMouse: {
+//            root.opacity =  1.0
+//        }
+
+        onEntered:{
+            root.opacity = 1.0
+        }
+
+        onExited:{
+            root.opacity = 0.0
+        }
+
+
+        anchors.fill: parent;
+        z: -1 }
 
     Image {
 //        opacity: 0.2

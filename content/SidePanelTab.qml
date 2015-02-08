@@ -22,7 +22,7 @@ import QtQuick 2.2
 
 Item {
     id:root
-//    opacity: 0.4
+    opacity: 0.0
 
     property bool panelHidden: true
     property int pageIndex
@@ -122,6 +122,20 @@ Item {
         property int swipeOffSet: 30
 
         anchors.fill:parent
+
+        hoverEnabled: true  //my part
+
+//        containsMouse: {
+//            root.opacity =  1.0
+//        }
+
+        onEntered:{
+            root.opacity = 1.0
+        }
+
+        onExited:{
+            root.opacity = 0.1
+        }
 
         onClicked: {
             if( allowEvents ) {

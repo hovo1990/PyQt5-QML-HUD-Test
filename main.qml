@@ -32,7 +32,7 @@ Item {
         id: mainView
     }
 
-    SidePanel{
+    SidePanel{   //VEry important
         id: sidePanelTest
     }
 
