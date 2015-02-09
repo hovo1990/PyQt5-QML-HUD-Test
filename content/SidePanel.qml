@@ -36,7 +36,7 @@ Item {
 
     width: 300
     height: parent.height
-//    opacity: 0.0 // allright
+    opacity: 0.0 // allright
     x: (mode == 0) ? -width -1 : parent.width
     visible: false
 
@@ -56,6 +56,7 @@ Item {
     onStateChanged: { p.animationDuration = 250}
 
     function showPanel() {
+        opaFull()
         slideIn.running = true
         root.state = 'shown';
         root.appearing()
@@ -64,6 +65,10 @@ Item {
 
     function opaZero() {
         opacityZero.running = true
+    }
+
+    function opaFull() {
+        opacityFull.running = true
     }
 
 
@@ -137,6 +142,17 @@ Item {
         duration: p.animationDuration
         easing.type: Easing.OutQuad
     }
+
+     NumberAnimation{
+        id: opacityFull
+        target: root
+        property: "opacity"
+        from: 0.0
+        to: 0.8
+        duration: p.animationDuration
+        easing.type: Easing.OutQuad
+    }
+
 
     QtObject {
         id: p
