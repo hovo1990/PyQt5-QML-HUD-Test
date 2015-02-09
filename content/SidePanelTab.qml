@@ -22,7 +22,7 @@ import QtQuick 2.2
 
 Item {
     id:root
-    opacity: 0.0
+//    opacity: 0.0
 
     property bool panelHidden: true
     property int pageIndex

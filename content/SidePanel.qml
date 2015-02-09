@@ -36,7 +36,7 @@ Item {
 
     width: 300
     height: parent.height
-    opacity: 0.0 // allright
+//    opacity: 0.0 // allright
     x: (mode == 0) ? -width -1 : parent.width
     visible: false
 
@@ -61,7 +61,15 @@ Item {
         root.appearing()
     }
 
+
+    function opaZero() {
+        opacityZero.running = true
+    }
+
+
+
     function hidePanel() {
+        opaZero()
         slideOut.running = true
         root.state = 'hidden';
         root.hiding()
@@ -120,6 +128,16 @@ Item {
         easing.type: Easing.OutQuad
     }
 
+     NumberAnimation{
+        id: opacityZero
+        target: root
+        property: "opacity"
+        from: 0.8
+        to: 0.0
+        duration: p.animationDuration
+        easing.type: Easing.OutQuad
+    }
+
     QtObject {
         id: p
         property int animationDuration: 0
@@ -152,11 +170,13 @@ Item {
 //        }
 
         onEntered:{
-            root.opacity = 1.0
+            root.opacity = 0.8
         }
 
         onExited:{
-            root.opacity = 0.0
+            root.state = 'hidden';
+            root.hidePanel()
+//            root.opacity = 0.0
         }
 
 
