@@ -28,7 +28,7 @@ Item {
     property int pageIndex
     property string label: 'Panel Tab Top'
 
-    property int mode: 0 // left: 0; right: 1
+    property int mode: 0 // top: 0; bottom: 1
 
     property string colorActive: style.basysBlue
     property string colorEmboss: '#0077dd'
@@ -36,8 +36,8 @@ Item {
     signal clicked( int index )
     signal swiped()
 
-    width:38
-    height:labelText.width + 30
+    width: labelTextTop.width + 500
+    height: 38
     clip: true
 
     state:'normal'
@@ -46,15 +46,15 @@ Item {
         State {
             name:'normal'
             PropertyChanges {
-                target:background
-                x:(mode == 0) ? -8 : 8
+                target:backgroundTop
+                y:(mode == 0) ? -8 : 8
             }
         },
         State {
             name:'active'
             PropertyChanges {
-                target:background
-                x:(mode == 0) ? 0 : 0
+                target:backgroundTop
+                y:(mode == 0) ? 0 : 0
             }
         }
     ]
@@ -88,7 +88,7 @@ Item {
 //    }
 
     Image {
-        id: background
+        id: backgroundTop
         source: "images/sidebar_leave_top.png"
         opacity: 0.4 // test
         width: parent.width
@@ -99,7 +99,7 @@ Item {
     TabletCommonStyle { id: style }
 
     Text {
-        id:labelText
+        id:labelTextTop
         anchors {
             verticalCenter:parent.verticalCenter
             horizontalCenter:parent.horizontalCenter
@@ -113,7 +113,7 @@ Item {
         color: "white"
         font.bold: true
         text:root.label
-        rotation: ( mode== 0) ? 90 : -90
+        rotation: ( mode== 0) ? 0 : 0
     }
 
     MouseArea {

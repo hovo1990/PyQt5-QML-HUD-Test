@@ -35,7 +35,7 @@ Item {
     signal appearing()  // Panel has finished showing up
 
     width: 600
-    height: 800
+    height: 600
     opacity: 0.8 // allright
     y: (mode == 0) ? -height -1 : parent.height
     visible: false
@@ -205,15 +205,17 @@ Item {
         source: "images/sidebar_top.png"
         width: parent.width
         y: 0
+        x: 250
     }
 
     Rectangle {
-        id: background
+        id: backgroundTop
         opacity: 0.2
         width: parent.width - 0.5 // this forces the painter to round down.
         // note: images seem to round down by default
-        height: parent.height - headerBckg.height
+        height: parent.height - headerBckg.height -30
         y: headerBckg.height
+        x: 250
         color: style.panelBackground
     }
 
@@ -254,21 +256,21 @@ Item {
         colorActive: style.panelBackground
         colorEmboss: style.panelBackground
 
-        x: style.sideBarHeaderHeight + 50
+        x: style.sideBarHeaderHeight + 500 // ok
         y: (root.mode == 0) ? parent.height : -height
         z: 1
     }
 
     Coverview{
-
+        x: 250
     }
 
     Column {
         id:tabsTop
         height:parent.height - 150
         anchors {
-            left: (root.mode == 0) ? background.right : undefined
-            right: (root.mode == 0) ? undefined : background.left
+            left: (root.mode == 0) ? backgroundTop.right : undefined
+            right: (root.mode == 0) ? undefined : backgroundTop.left
             top: handleTop.bottom
             topMargin: 30
         }
