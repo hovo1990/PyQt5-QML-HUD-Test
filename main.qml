@@ -33,7 +33,11 @@ Item {
     }
 
     SidePanel{   //VEry important
-        id: sidePanelTest
+        id: sidePanelLeft
+    }
+
+    SidePanelTop{   //VEry important
+        id: sidePanelTop
     }
 
     /*
